@@ -30,6 +30,7 @@ export const updateUser = async (req, res, next) => {
         if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
             return next(errorHandler(400, "Username can only contain letters and numbers"));
         }
+    }
         try {
             const updateUser = await User.findByIdAndUpdate(req.params.userId, {
                 $set: {
@@ -41,8 +42,9 @@ export const updateUser = async (req, res, next) => {
             }, { new: true }
         );
         const { password, ...rest } = updateUser._doc;
+        res.status(200).json(rest);
+        console.log("User updated")
         } catch (error) {
             next(error);
         }
-    }
 };
